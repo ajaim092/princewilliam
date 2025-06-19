@@ -44,7 +44,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prince William County, VA</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" />
     <style>
         body {
             margin: 0;
@@ -52,7 +51,7 @@
             font-family: Arial, sans-serif;
         }
         #map {
-            height: calc(100vh - 190px);
+            height: calc(100vh - 130px);
         }
         #header {
             height: 40px;
@@ -63,6 +62,16 @@
             font-size: 24px;
             font-weight: bold;
         }
+        #tract-selector {
+            height: 40px;
+            background: #f8f8f8;
+            padding: 10px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #ccc;
+        }
         #filter-bar {
             height: 50px;
             background: #f8f8f8;
@@ -71,32 +80,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        #slider-bar {
-            height: 50px;
-            background: #f0f0f0;
-            padding: 10px;
-            text-align: center;
-        }
-        #oz-table {
-            height: 50px;
-            background: #fff;
-            padding: 10px;
-            text-align: center;
-            font-family: Arial, sans-serif;
-            border-top: 1px solid #ccc;
-            overflow: auto;
-        }
-        #oz-table table {
-            margin: 0 auto;
-            border-collapse: collapse;
-        }
-        #oz-table th, #oz-table td {
-            padding: 5px 10px;
-            border: 1px solid #ccc;
-        }
-        #oz-table th {
-            background: #f8f8f8;
         }
         #links {
             height: 40px;
@@ -112,16 +95,39 @@
             color: #0066cc;
             text-decoration: none;
         }
+#income-table {
+    height: 80px;
+    background: #fff;
+    padding: 10px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    border-top: 1px solid #ccc;
+}
+#income-table table {
+    margin: 0 auto;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+#income-table th, #income-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+#income-table th {
+    background: #f8f8f8;
+    font-weight: bold;
+}
+
         #links a:hover {
             text-decoration: underline;
         }
-        #filter-bar label {
+        #filter-bar label, #tract-selector label {
             margin: 0 15px;
             font-size: 14px;
             display: flex;
             align-items: center;
         }
-        #hoct-filter, #ffiec-filter {
+        #hoct-filter, #ffiec-filter, #tract-filter {
             margin-left: 5px;
             padding: 5px;
             font-family: Arial, sans-serif;
@@ -148,6 +154,8 @@
             position: absolute;
             background-color: white;
             min-width: 300px;
+            max-height: 300px;
+            overflow-y: auto;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 1000;
             border: 1px solid #ccc;
@@ -202,7 +210,107 @@
 </head>
 <body>
     <div id="header">Prince William County, VA</div>
+    <div id="tract-selector">
+        <label>Tract: 
+            <select id="tract-filter">
+                <option value="All">Select Tract</option>
+                <option value="9001">9001</option>
+                <option value="9002.01">9002.01</option>
+                <option value="9002.02">9002.02</option>
+                <option value="9002.03">9002.03</option>
+                <option value="9003.01">9003.01</option>
+                <option value="9003.02">9003.02</option>
+                <option value="9004.03">9004.03</option>
+                <option value="9004.04">9004.04</option>
+                <option value="9004.07">9004.07</option>
+                <option value="9004.08">9004.08</option>
+                <option value="9004.09">9004.09</option>
+                <option value="9004.1">9004.1</option>
+                <option value="9005.02">9005.02</option>
+                <option value="9005.03">9005.03</option>
+                <option value="9005.04">9005.04</option>
+                <option value="9006.01">9006.01</option>
+                <option value="9006.02">9006.02</option>
+                <option value="9007.01">9007.01</option>
+                <option value="9007.02">9007.02</option>
+                <option value="9008.01">9008.01</option>
+                <option value="9008.03">9008.03</option>
+                <option value="9008.04">9008.04</option>
+                <option value="9009.01">9009.01</option>
+		<option value="9009.04">9009.04</option>
+                <option value="9009.05">9009.05</option>
+                <option value="9010.05">9010.05</option>
+                <option value="9010.09">9010.09</option>
+                <option value="9010.1">9010.1</option>
+                <option value="9010.11">9010.11</option>
+                <option value="9010.12">9010.12</option>
+                <option value="9010.13">9010.13</option>
+                <option value="9010.14">9010.14</option>
+                <option value="9010.15">9010.15</option>
+                <option value="9010.16">9010.16</option>
+                <option value="9011.01">9011.01</option>
+                <option value="9011.02">9011.02</option>
+                <option value="9012.03">9012.03</option>
+                <option value="9012.08">9012.08</option>
+                <option value="9012.09">9012.09</option>
+                <option value="9012.11">9012.11</option>
+                <option value="9012.12">9012.12</option>
+                <option value="9012.19">9012.19</option>
+                <option value="9012.21">9012.21</option>
+                <option value="9012.22">9012.22</option>
+                <option value="9012.23">9012.23</option>
+                <option value="9012.24">9012.24</option>
+                <option value="9012.25">9012.25</option>
+                <option value="9012.26">9012.26</option>
+                <option value="9012.27">9012.27</option>
+                <option value="9012.28">9012.28</option>
+                <option value="9012.29">9012.29</option>
+                <option value="9012.3">9012.3</option>
+                <option value="9012.31">9012.31</option>
+                <option value="9012.32">9012.32</option>
+                <option value="9012.33">9012.33</option>
+                <option value="9012.34">9012.34</option>
+                <option value="9012.35">9012.35</option>
+                <option value="9012.36">9012.36</option>
+                <option value="9012.37">9012.37</option>
+                <option value="9013.03">9013.03</option>
+                <option value="9013.04">9013.04</option>
+                <option value="9013.05">9013.05</option>
+                <option value="9013.06">9013.06</option>
+                <option value="9014.03">9014.03</option>
+                <option value="9014.07">9014.07</option>
+                <option value="9014.09">9014.09</option>
+                <option value="9014.11">9014.11</option>
+                <option value="9014.12">9014.12</option>
+                <option value="9014.13">9014.13</option>
+		<option value="9014.14">9014.14</option>
+                <option value="9014.15">9014.15</option>
+                <option value="9014.16">9014.16</option>
+                <option value="9014.17">9014.17</option>
+                <option value="9014.18">9014.18</option>
+                <option value="9014.19">9014.19</option>
+                <option value="9014.2">9014.2</option>
+                <option value="9014.21">9014.21</option>
+                <option value="9015.03">9015.03</option>
+                <option value="9015.04">9015.04</option>
+                <option value="9015.05">9015.05</option>
+                <option value="9015.06">9015.06</option>
+                <option value="9015.07">9015.07</option>
+                <option value="9015.08">9015.08</option>
+                <option value="9015.09">9015.09</option>
+                <option value="9015.10">9015.10</option>
+                <option value="9015.11">9015.11</option>
+                <option value="9016.01">9016.01</option>
+                <option value="9016.02">9016.02</option>
+                <option value="9017.02">9017.02</option>
+                <option value="9017.03">9017.03</option>
+                <option value="9017.04">9017.04</option>
+                <option value="9019">9019</option>
+            </select>
+        </label>
+    </div>
     <div id="filter-bar">
+        <label><input type="checkbox" id="oz-filter"> OZ</label>
         <label><input type="checkbox" id="qct-filter"> QCT</label>
         <label><input type="checkbox" id="dda-filter"> DDA</label>
         <label>HOCT: 
@@ -235,6 +343,7 @@
                     <a href="https://ajaim092.github.io/fauquiercounty/" target="_blank">Fauquier County</a>
                     <a href="https://ajaim092.github.io/floydmap/" target="_blank">Floyd County</a>
                     <a href="https://ajaim092.github.io/frederickcounty/" target="_blank">Frederick County</a>
+                    <a href="https://ajaim092.github.io/graysoncounty/" target="_blank">Grayson County</a>
                     <a href="https://ajaim092.github.io/leecounty/" target="_blank">Lee County</a>
                     <a href="https://ajaim092.github.io/manassas/" target="_blank">Manassas City</a>
                     <a href="https://ajaim092.github.io/pagecounty/" target="_blank">Page County</a>
@@ -244,6 +353,7 @@
                     <a href="https://ajaim092.github.io/russellcounty/" target="_blank">Russell County</a>
                     <a href="https://ajaim092.github.io/scottcounty/" target="_blank">Scott County</a>
                     <a href="https://ajaim092.github.io/shenandoahcounty/" target="_blank">Shenandoah County</a>
+                    <a href="https://ajaim092.github.io/smythcounty/" target="_blank">Smyth County</a>
                     <a href="https://ajaim092.github.io/tazewellcounty/" target="_blank">Tazewell County</a>
                     <a href="https://ajaim092.github.io/warrencounty/" target="_blank">Warren County</a>
                     <a href="https://ajaim092.github.io/washingtoncounty/" target="_blank">Washington County</a>
@@ -252,1154 +362,33 @@
             </div>
         </label>
     </div>
-    <div id="slider-bar">
-        <label for="poverty-rate">Poverty Range (%): <span id="range-value">0.0 - 40.0</span></label>
-        <div id="poverty-range"></div>
-    </div>
     <div id="map"></div>
-    <div id="oz-table">
-        <table>
-            <tr><th>Opportunity Zone Tracts</th></tr>
-            <tr><td>Tract 9002.01, 9002.03, 9019</td></tr>
-        </table>
-    </div>
+<div id="income-table">
+    <table>
+        <tr>
+            <th>State Area Median Income</th>
+            <th>Locality Area Median Income</th>
+            <th>Community Type</th>
+        </tr>
+        <tr>
+            <td>$78,100</td>
+            <td>$163,900</td>
+            <td>High-Income Jurisdiction</td>
+        </tr>
+    </table>
+</div>
     <div id="links">
         <a href="https://www.huduser.gov/portal/datasets/fmr/fmrs/FY2025_code/2025summary.odn?&year=2025&fmrtype=Final&selection_type=county&fips=5115399999" target="_blank">2025 Fair Market Rents (FMRs)</a>
         <a href="https://www.huduser.gov/portal/datasets/il/il2025/2025summary.odn?STATES=51.0&INPUTNAME=METRO47900M47900*5115399999%2BPrince+William+County&statelist=&stname=Virginia&wherefrom=&statefp=51&year=2025&ne_flag=&selection_type=county&incpath=&data=2025&SubmitButton=View+County+Calculations" target="_blank">2025 Income Limits</a>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
     <script>
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-            if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-                try {
-                    var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                    var firstSheetName = workbook.SheetNames[0];
-                    var worksheet = workbook.Sheets[firstSheetName];
-                    var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                    var filteredData = jsonData.filter(row => row.some(filledCell));
-                    var headerRowIndex = filteredData.findIndex((row, index) =>
-                      row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                    );
-                    if (headerRowIndex === -1 || headerRowIndex > 25) {
-                      headerRowIndex = 0;
-                    }
-                    var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
-                    csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                    return csv;
-                } catch (e) {
-                    console.error(e);
-                    return "";
-                }
-            }
-            return gk_fileData[filename] || "";
-        }
-
         var map = L.map('map').setView([38.6779, -77.3986], 11);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        var tracts = [
-            {
-                name: "Tract 9001",
-                centroid: [38.6313893, -77.2392311],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 1.6,
-                unemployment: 1.7,
-                ffiec: "Mixed",
-                popup: "<b>Census Tract 9001</b><br>Centroid: 38.6313893, -77.2392311<br>QCT: NO<br>DDA: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 1.6%<br>Unemployment Rate (2023): 1.7%"
-            },
-            {
-                name: "Tract 9002.01",
-                centroid: [38.6644797, -77.2507356],
-                qct: "NO",
-                dda: "NO",
-                oz: "YES",
-                poverty: 13.1,
-                unemployment: 3.2,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9002.01</b><br>Centroid: 38.6644797, -77.2507356<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 13.1%<br>Unemployment Rate (2023): 3.2%"
-            },
-            {
-                name: "Tract 9002.02",
-                centroid: [38.6624357, -77.2666041],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 1.3,
-                unemployment: 2.3,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9002.02</b><br>Centroid: 38.6624357, -77.2666041<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 1.3%<br>Unemployment Rate (2023): 2.3%"
-            },
-            {
-                name: "Tract 9002.03",
-                centroid: [38.6546809, -77.2626427],
-                qct: "YES",
-                dda: "NO",
-                oz: "YES",
-                poverty: 11.0,
-                unemployment: 4.7,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9002.03</b><br>Centroid: 38.6546809, -77.2626427<br>QCT: YES<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 11.0%<br>Unemployment Rate (2023): 4.7%"
-            },
-            {
-                name: "Tract 9003.01",
-                centroid: [38.6773051, -77.2589768],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 20.5,
-                unemployment: 8.3,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9003.01</b><br>Centroid: 38.6773051, -77.2589768<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 20.5%<br>Unemployment Rate (2023): 8.3%"
-            },
-            {
-                name: "Tract 9003.02",
-                centroid: [38.6665004, -77.2792255],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 14.5,
-                unemployment: 2.1,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9003.02</b><br>Centroid: 38.6665004, -77.2792255<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 14.5%<br>Unemployment Rate (2023): 2.1%"
-            },
-            {
-                name: "Tract 9004.03",
-                centroid: [38.6443085, -77.3007323],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 5.9,
-                unemployment: 2.4,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9004.03</b><br>Centroid: 38.6443085, -77.3007323<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 5.9%<br>Unemployment Rate (2023): 2.4%"
-            },
-            {
-                name: "Tract 9004.04",
-                centroid: [38.6406633, -77.3214704],
-                qct: "YES",
-                dda: "NO",
-                oz: "NO",
-                poverty: 16.8,
-                unemployment: 2.9,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9004.04</b><br>Centroid: 38.6406633, -77.3214704<br>QCT: YES<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 16.8%<br>Unemployment Rate (2023): 2.9%"
-            },
-            {
-                name: "Tract 9004.07",
-                centroid: [38.6377145, -77.3390306],
-                qct: "YES",
-                dda: "NO",
-                oz: "NO",
-                poverty: 6.4,
-                unemployment: 3.7,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9004.07</b><br>Centroid: 38.6377145, -77.3390306<br>QCT: YES<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.4%<br>Unemployment Rate (2023): 3.7%"
-            },
-            {
-                name: "Tract 9004.08",
-                centroid: [38.6264969, -77.3371909],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 8.1,
-                unemployment: 2.9,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9004.08</b><br>Centroid: 38.6264969, -77.3371909<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 8.1%<br>Unemployment Rate (2023): 2.9%"
-            },
-            {
-                name: "Tract 9004.09",
-                centroid: [38.6282075, -77.3235485],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 2.5,
-                unemployment: 1.7,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9004.09</b><br>Centroid: 38.6282075, -77.3235485<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 2.5%<br>Unemployment Rate (2023): 1.7%"
-            },
-            {
-                name: "Tract 9004.1",
-                centroid: [38.6196886, -77.3038602],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 7.7,
-                unemployment: 3.9,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9004.1</b><br>Centroid: 38.6196886, -77.3038602<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 7.7%<br>Unemployment Rate (2023): 3.9%"
-            },
-            {
-                name: "Tract 9005.02",
-                centroid: [38.6271336, -77.2842706],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 3.5,
-                unemployment: 3.6,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9005.02</b><br>Centroid: 38.6271336, -77.2842706<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 3.5%<br>Unemployment Rate (2023): 3.6%"
-            },
-            {
-                name: "Tract 9005.03",
-                centroid: [38.6447685, -77.2801936],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 1.8,
-                unemployment: 4.9,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9005.03</b><br>Centroid: 38.6447685, -77.2801936<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 1.8%<br>Unemployment Rate (2023): 4.9%"
-            },
-            {
-                name: "Tract 9005.04",
-                centroid: [38.6434388, -77.2720178],
-                qct: "YES",
-                dda: "NO",
-                oz: "NO",
-                poverty: 11.1,
-                unemployment: 11.8,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9005.04</b><br>Centroid: 38.6434388, -77.2720178<br>QCT: YES<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 11.1%<br>Unemployment Rate (2023): 11.8%"
-            },
-            {
-                name: "Tract 9006.01",
-                centroid: [38.6374598, -77.2593772],
-                qct: "YES",
-                dda: "NO",
-                oz: "NO",
-                poverty: 18.0,
-                unemployment: 1.2,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9006.01</b><br>Centroid: 38.6374598, -77.2593772<br>QCT: YES<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 18.0%<br>Unemployment Rate (2023): 1.2%"
-            },
-            {
-                name: "Tract 9006.02",
-                centroid: [38.6474493, -77.2558034],
-                qct: "YES",
-                dda: "NO",
-                oz: "NO",
-                poverty: 9.6,
-                unemployment: 4.3,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9006.02</b><br>Centroid: 38.6474493, -77.2558034<br>QCT: YES<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 9.6%<br>Unemployment Rate (2023): 4.3%"
-            },
-            {
-                name: "Tract 9007.01",
-                centroid: [38.6194405, -77.2773734],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 9.4,
-                unemployment: 6.2,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9007.01</b><br>Centroid: 38.6194405, -77.2773734<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 9.4%<br>Unemployment Rate (2023): 6.2%"
-            },
-            {
-                name: "Tract 9007.02",
-                centroid: [38.6184428, -77.2619332],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 10.1,
-                unemployment: 3.3,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9007.02</b><br>Centroid: 38.6184428, -77.2619332<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 10.1%<br>Unemployment Rate (2023): 3.3%"
-            },
-            {
-                name: "Tract 9008.01",
-                centroid: [38.5953501, -77.2691618],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 0.2,
-                unemployment: 4.2,
-                ffiec: "Mixed",
-                popup: "<b>Census Tract 9008.01</b><br>Centroid: 38.5953501, -77.2691618<br>QCT: NO<br>DDA: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 0.2%<br>Unemployment Rate (2023): 4.2%"
-            },
-            {
-                name: "Tract 9008.03",
-                centroid: [38.5864092, -77.3004824],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 17.9,
-                unemployment: 6.4,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9008.03</b><br>Centroid: 38.5864092, -77.3004824<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 17.9%<br>Unemployment Rate (2023): 6.4%"
-            },
-            {
-                name: "Tract 9008.04",
-                centroid: [38.5780533, -77.2763797],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 1.3,
-                unemployment: 4.6,
-                ffiec: "Mixed",
-                popup: "<b>Census Tract 9008.04</b><br>Centroid: 38.5780533, -77.2763797<br>QCT: NO<br>DDA: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 1.3%<br>Unemployment Rate (2023): 4.6%"
-            },
-            {
-                name: "Tract 9009.01",
-                centroid: [38.5614746, -77.3206065],
-                qct: "YES",
-                dda: "NO",
-                oz: "NO",
-                poverty: 9.4,
-                unemployment: 3.6,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9009.01</b><br>Centroid: 38.5614746, -77.3206065<br>QCT: YES<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 9.4%<br>Unemployment Rate (2023): 3.6%"
-            },
-            {
-                name: "Tract 9009.04",
-                centroid: [38.5587605, -77.2875838],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 3.9,
-                unemployment: 2.7,
-                ffiec: "Mixed",
-                popup: "<b>Census Tract 9009.04</b><br>Centroid: 38.5587605, -77.2875838<br>QCT: NO<br>DDA: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 3.9%<br>Unemployment Rate (2023): 2.7%"
-            },
-            {
-                name: "Tract 9009.05",
-                centroid: [38.5456239, -77.3161619],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 8.5,
-                unemployment: 7.4,
-                ffiec: "Mixed",
-                popup: "<b>Census Tract 9009.05</b><br>Centroid: 38.5456239, -77.3161619<br>QCT: NO<br>DDA: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 8.5%<br>Unemployment Rate (2023): 7.4%"
-            },
-            {
-                name: "Tract 9010.05",
-                centroid: [38.6229136, -77.386497],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 0.3,
-                unemployment: 2.6,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9010.05</b><br>Centroid: 38.6229136, -77.386497<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 0.3%<br>Unemployment Rate (2023): 2.6%"
-            },
-            {
-                name: "Tract 9010.09",
-                centroid: [38.6239916, -77.3573107],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 1.1,
-                unemployment: 1.7,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9010.09</b><br>Centroid: 38.6239916, -77.3573107<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 1.1%<br>Unemployment Rate (2023): 1.7%"
-            },
-            {
-                name: "Tract 9010.1",
-                centroid: [38.610902, -77.3534789],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 1.5,
-                unemployment: 5.5,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9010.1</b><br>Centroid: 38.610902, -77.3534789<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 1.5%<br>Unemployment Rate (2023): 5.5%"
-            },
-            {
-                name: "Tract 9010.11",
-                centroid: [38.6129458, -77.3254103],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 6.5,
-                unemployment: 3.6,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9010.11</b><br>Centroid: 38.6129458, -77.3254103<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.5%<br>Unemployment Rate (2023): 3.6%"
-            },
-            {
-                name: "Tract 9010.12",
-                centroid: [38.5959459, -77.3254607],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 10.2,
-                unemployment: 2.5,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9010.12</b><br>Centroid: 38.5959459, -77.3254607<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 10.2%<br>Unemployment Rate (2023): 2.5%"
-            },
-{
-                name: "Tract 9010.13",
-                centroid: [38.5736591, -77.3278575],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 2.2,
-                unemployment: 2.1,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9010.13</b><br>Centroid: 38.5736591, -77.3278575<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 2.2%<br>Unemployment Rate (2023): 2.1%"
-            },
-            {
-                name: "Tract 9010.14",
-                centroid: [38.5890755, -77.3830071],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 9.2,
-                unemployment: 6.9,
-                ffiec: "Mixed",
-                popup: "<b>Census Tract 9010.14</b><br>Centroid: 38.5890755, -77.3830071<br>QCT: NO<br>DDA: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 9.2%<br>Unemployment Rate (2023): 6.9%"
-            },
-            {
-                name: "Tract 9010.15",
-                centroid: [38.5841196, -77.3147366],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 11.5,
-                unemployment: 5.6,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9010.15</b><br>Centroid: 38.5841196, -77.3147366<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 11.5%<br>Unemployment Rate (2023): 5.6%"
-            },
-            {
-                name: "Tract 9010.16",
-                centroid: [38.5999513, -77.3041659],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 4.9,
-                unemployment: 5.3,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9010.16</b><br>Centroid: 38.5999513, -77.3041659<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 4.9%<br>Unemployment Rate (2023): 5.3%"
-            },
-            {
-                name: "Tract 9011.01",
-                centroid: [38.5289893, -77.3008801],
-                qct: "YES",
-                dda: "NO",
-                oz: "NO",
-                poverty: 16.9,
-                unemployment: 2.1,
-                ffiec: "Mixed",
-                popup: "<b>Census Tract 9011.01</b><br>Centroid: 38.5289893, -77.3008801<br>QCT: YES<br>DDA: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 16.9%<br>Unemployment Rate (2023): 2.1%"
-            },
-            {
-                name: "Tract 9011.02",
-                centroid: [38.5236014, -77.3340138],
-                qct: "YES",
-                dda: "NO",
-                oz: "NO",
-                poverty: 2.7,
-                unemployment: 1.1,
-                ffiec: "Mixed",
-                popup: "<b>Census Tract 9011.02</b><br>Centroid: 38.5236014, -77.3340138<br>QCT: YES<br>DDA: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 2.7%<br>Unemployment Rate (2023): 1.1%"
-            },
-            {
-                name: "Tract 9012.03",
-                centroid: [38.6531803, -77.3347516],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 6.7,
-                unemployment: 3.8,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.03</b><br>Centroid: 38.6531803, -77.3347516<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.7%<br>Unemployment Rate (2023): 3.8%"
-            },
-            {
-                name: "Tract 9012.08",
-                centroid: [38.68532, -77.2761835],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 4.5,
-                unemployment: 1.6,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.08</b><br>Centroid: 38.68532, -77.2761835<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 4.5%<br>Unemployment Rate (2023): 1.6%"
-            },
-            {
-                name: "Tract 9012.09",
-                centroid: [38.6670477, -77.2981689],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 11.9,
-                unemployment: 4.1,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.09</b><br>Centroid: 38.6670477, -77.2981689<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 11.9%<br>Unemployment Rate (2023): 4.1%"
-            },
-            {
-                name: "Tract 9012.11",
-                centroid: [38.6673898, -77.3398683],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 6.1,
-                unemployment: 3.2,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.11</b><br>Centroid: 38.6673898, -77.3398683<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.1%<br>Unemployment Rate (2023): 3.2%"
-            },
-            {
-                name: "Tract 9012.12",
-                centroid: [38.6684118, -77.3530624],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 4.6,
-                unemployment: 3.8,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.12</b><br>Centroid: 38.6684118, -77.3530624<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 4.6%<br>Unemployment Rate (2023): 3.8%"
-            },
-            {
-                name: "Tract 9012.19",
-                centroid: [38.7007406, -77.3773063],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 2.5,
-                unemployment: 2.9,
-                ffiec: "Mixed",
-                popup: "<b>Census Tract 9012.19</b><br>Centroid: 38.7007406, -77.3773063<br>QCT: NO<br>DDA: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 2.5%<br>Unemployment Rate (2023): 2.9%"
-            },
-            {
-                name: "Tract 9012.21",
-                centroid: [38.6924811, -77.3162446],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 8.5,
-                unemployment: 2.6,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.21</b><br>Centroid: 38.6924811, -77.3162446<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 8.5%<br>Unemployment Rate (2023): 2.6%"
-            },
-            {
-                name: "Tract 9012.22",
-                centroid: [38.6991308, -77.3047499],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 3.9,
-                unemployment: 5.3,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.22</b><br>Centroid: 38.6991308, -77.3047499<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 3.9%<br>Unemployment Rate (2023): 5.3%"
-            },
-            {
-                name: "Tract 9012.23",
-                centroid: [38.691492, -77.2947441],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 6.8,
-                unemployment: 1.2,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.23</b><br>Centroid: 38.691492, -77.2947441<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.8%<br>Unemployment Rate (2023): 1.2%"
-            },
-            {
-                name: "Tract 9012.24",
-                centroid: [38.6773404, -77.3064163],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 4.3,
-                unemployment: 2.7,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.24</b><br>Centroid: 38.6773404, -77.3064163<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 4.3%<br>Unemployment Rate (2023): 2.7%"
-            },
-            {
-                name: "Tract 9012.25",
-                centroid: [38.6687247, -77.3227437],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 3.6,
-                unemployment: 3.0,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.25</b><br>Centroid: 38.6687247, -77.3227437<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 3.6%<br>Unemployment Rate (2023): 3.0%"
-            },
-            {
-                name: "Tract 9012.26",
-                centroid: [38.6672224, -77.3699208],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 3.2,
-                unemployment: 2.9,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.26</b><br>Centroid: 38.6672224, -77.3699208<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 3.2%<br>Unemployment Rate (2023): 2.9%"
-            },
-            {
-                name: "Tract 9012.27",
-                centroid: [38.6529875, -77.362232],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 5.8,
-                unemployment: 1.7,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.27</b><br>Centroid: 38.6529875, -77.362232<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 5.8%<br>Unemployment Rate (2023): 1.7%"
-            },
-            {
-                name: "Tract 9012.28",
-                centroid: [38.6397935, -77.3642237],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 6.0,
-                unemployment: 2.7,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.28</b><br>Centroid: 38.6397935, -77.3642237<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.0%<br>Unemployment Rate (2023): 2.7%"
-            },
-            {
-                name: "Tract 9012.29",
-                centroid: [38.6516056, -77.3817759],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 3.6,
-                unemployment: 3.0,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.29</b><br>Centroid: 38.6516056, -77.3817759<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 3.6%<br>Unemployment Rate (2023): 3.0%"
-            },
-            {
-                name: "Tract 9012.3",
-                centroid: [38.6642108, -77.3896059],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 9.9,
-                unemployment: 3.5,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.3</b><br>Centroid: 38.6642108, -77.3896059<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 9.9%<br>Unemployment Rate (2023): 3.5%"
-            },
-            {
-                name: "Tract 9012.31",
-                centroid: [38.7411773, -77.4157476],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 5.5,
-                unemployment: 2.7,
-                ffiec: "Mixed",
-                popup: "<b>Census Tract 9012.31</b><br>Centroid: 38.7411773, -77.4157476<br>QCT: NO<br>DDA: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 5.5%<br>Unemployment Rate (2023): 2.7%"
-            },
-            {
-                name: "Tract 9012.32",
-                centroid: [38.7209097, -77.4418177],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 5.7,
-                unemployment: 1.2,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.32</b><br>Centroid: 38.7209097, -77.4418177<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 5.7%<br>Unemployment Rate (2023): 1.2%"
-            },
-            {
-                name: "Tract 9012.33",
-                centroid: [38.6839203, -77.4235728],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 5.4,
-                unemployment: 2.4,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.33</b><br>Centroid: 38.6839203, -77.4235728<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 5.4%<br>Unemployment Rate (2023): 2.4%"
-            },
-            {
-                name: "Tract 9012.34",
-                centroid: [38.6463775, -77.411473],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 2.5,
-                unemployment: 0.7,
-                ffiec: "Mixed",
-                popup: "<b>Census Tract 9012.34</b><br>Centroid: 38.6463775, -77.411473<br>QCT: NO<br>DDA: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 2.5%<br>Unemployment Rate (2023): 0.7%"
-            },
-            {
-                name: "Tract 9012.35",
-                centroid: [38.6994915, -77.3416008],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 6.7,
-                unemployment: 3.8,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.35</b><br>Centroid: 38.6994915, -77.3416008<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.7%<br>Unemployment Rate (2023): 3.8%"
-            },
-            {
-                name: "Tract 9012.36",
-                centroid: [38.6853477, -77.3426641],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 11.9,
-                unemployment: 4.1,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.36</b><br>Centroid: 38.6853477, -77.3426641<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 11.9%<br>Unemployment Rate (2023): 4.1%"
-            },
-            {
-                name: "Tract 9012.37",
-                centroid: [38.6855748, -77.3277445],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 6.1,
-                unemployment: 3.2,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9012.37</b><br>Centroid: 38.6855748, -77.3277445<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.1%<br>Unemployment Rate (2023): 3.2%"
-            },
-            {
-                name: "Tract 9013.03",
-                centroid: [38.7266079, -77.4876272],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 4.6,
-                unemployment: 3.8,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9013.03</b><br>Centroid: 38.7266079, -77.4876272<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 4.6%<br>Unemployment Rate (2023): 3.8%"
-            },
-            {
-                name: "Tract 9013.04",
-                centroid: [38.704982, -77.4808906],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 2.5,
-                unemployment: 2.9,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9013.04</b><br>Centroid: 38.704982, -77.4808906<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 2.5%<br>Unemployment Rate (2023): 2.9%"
-            },
-{
-                name: "Tract 9013.05",
-                centroid: [38.6692614, -77.548488],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 8.5,
-                unemployment: 2.6,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9013.05</b><br>Centroid: 38.6692614, -77.548488<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 8.5%<br>Unemployment Rate (2023): 2.6%"
-            },
-            {
-                name: "Tract 9013.06",
-                centroid: [38.6617734, -77.4688581],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 3.9,
-                unemployment: 5.3,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9013.06</b><br>Centroid: 38.6617734, -77.4688581<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 3.9%<br>Unemployment Rate (2023): 5.3%"
-            },
-            {
-                name: "Tract 9014.03",
-                centroid: [38.7733123, -77.5141244],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 6.8,
-                unemployment: 1.2,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9014.03</b><br>Centroid: 38.7733123, -77.5141244<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.8%<br>Unemployment Rate (2023): 1.2%"
-            },
-            {
-                name: "Tract 9014.07",
-                centroid: [38.7948256, -77.5310809],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 4.3,
-                unemployment: 2.7,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9014.07</b><br>Centroid: 38.7948256, -77.5310809<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 4.3%<br>Unemployment Rate (2023): 2.7%"
-            },
-            {
-                name: "Tract 9014.09",
-                centroid: [38.7559135, -77.5368707],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 3.6,
-                unemployment: 3.0,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9014.09</b><br>Centroid: 38.7559135, -77.5368707<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 3.6%<br>Unemployment Rate (2023): 3.0%"
-            },
-            {
-                name: "Tract 9014.11",
-                centroid: [38.7794101, -77.6380549],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 3.2,
-                unemployment: 2.9,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9014.11</b><br>Centroid: 38.7794101, -77.6380549<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 3.2%<br>Unemployment Rate (2023): 2.9%"
-            },
-            {
-                name: "Tract 9014.12",
-                centroid: [38.768225, -77.6078228],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 5.8,
-                unemployment: 1.7,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9014.12</b><br>Centroid: 38.768225, -77.6078228<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 5.8%<br>Unemployment Rate (2023): 1.7%"
-            },
-            {
-                name: "Tract 9014.13",
-                centroid: [38.7612374, -77.5923154],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 6.0,
-                unemployment: 2.7,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9014.13</b><br>Centroid: 38.7612374, -77.5923154<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.0%<br>Unemployment Rate (2023): 2.7%"
-            },
-            {
-                name: "Tract 9014.14",
-                centroid: [38.7486618, -77.6002764],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 3.6,
-                unemployment: 3.0,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9014.14</b><br>Centroid: 38.7486618, -77.6002764<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 3.6%<br>Unemployment Rate (2023): 3.0%"
-            },
-            {
-                name: "Tract 9014.15",
-                centroid: [38.7452625, -77.572931],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 9.9,
-                unemployment: 3.5,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9014.15</b><br>Centroid: 38.7452625, -77.572931<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 9.9%<br>Unemployment Rate (2023): 3.5%"
-            },
-            {
-                name: "Tract 9014.16",
-                centroid: [38.7274767, -77.5531686],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 5.5,
-                unemployment: 2.7,
-                ffiec: "Mixed",
-                popup: "<b>Census Tract 9014.16</b><br>Centroid: 38.7274767, -77.5531686<br>QCT: NO<br>DDA: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 5.5%<br>Unemployment Rate (2023): 2.7%"
-            },
-            {
-                name: "Tract 9014.17",
-                centroid: [38.7265106, -77.6130006],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 5.7,
-                unemployment: 1.2,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9014.17</b><br>Centroid: 38.7265106, -77.6130006<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 5.7%<br>Unemployment Rate (2023): 1.2%"
-            },
-            {
-                name: "Tract 9014.18",
-                centroid: [38.7899061, -77.5437705],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 5.4,
-                unemployment: 2.4,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9014.18</b><br>Centroid: 38.7899061, -77.5437705<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 5.4%<br>Unemployment Rate (2023): 2.4%"
-            },
-            {
-                name: "Tract 9014.19",
-                centroid: [38.7882804, -77.5269349],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 2.5,
-                unemployment: 0.7,
-                ffiec: "Mixed",
-                popup: "<b>Census Tract 9014.19</b><br>Centroid: 38.7882804, -77.5269349<br>QCT: NO<br>DDA: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 2.5%<br>Unemployment Rate (2023): 0.7%"
-            },
-            {
-                name: "Tract 9014.2",
-                centroid: [38.7687898, -77.5591067],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 6.7,
-                unemployment: 3.8,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9014.2</b><br>Centroid: 38.7687898, -77.5591067<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.7%<br>Unemployment Rate (2023): 3.8%"
-            },
-            {
-                name: "Tract 9014.21",
-                centroid: [38.7798015, -77.5822318],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 11.9,
-                unemployment: 4.1,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9014.21</b><br>Centroid: 38.7798015, -77.5822318<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 11.9%<br>Unemployment Rate (2023): 4.1%"
-            },
-            {
-                name: "Tract 9015.03",
-                centroid: [38.8531545, -77.5774798],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 6.1,
-                unemployment: 3.2,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9015.03</b><br>Centroid: 38.8531545, -77.5774798<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.1%<br>Unemployment Rate (2023): 3.2%"
-            },
-            {
-                name: "Tract 9015.04",
-                centroid: [38.8114622, -77.5911971],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 4.6,
-                unemployment: 3.8,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9015.04</b><br>Centroid: 38.8114622, -77.5911971<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 4.6%<br>Unemployment Rate (2023): 3.8%"
-            },
-            {
-                name: "Tract 9015.05",
-                centroid: [38.8304822, -77.6203148],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 2.5,
-                unemployment: 2.9,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9015.05</b><br>Centroid: 38.8304822, -77.6203148<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 2.5%<br>Unemployment Rate (2023): 2.9%"
-            },
-            {
-                name: "Tract 9015.06",
-                centroid: [38.8147363, -77.62378],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 8.5,
-                unemployment: 2.6,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9015.06</b><br>Centroid: 38.8147363, -77.62378<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 8.5%<br>Unemployment Rate (2023): 2.6%"
-            },
-            {
-                name: "Tract 9015.07",
-                centroid: [38.8061386, -77.6241536],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 3.9,
-                unemployment: 5.3,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9015.07</b><br>Centroid: 38.8061386, -77.6241536<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 3.9%<br>Unemployment Rate (2023): 5.3%"
-            },
-            {
-                name: "Tract 9015.08",
-                centroid: [38.7974172, -77.6451035],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 6.8,
-                unemployment: 1.2,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9015.08</b><br>Centroid: 38.7974172, -77.6451035<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.8%<br>Unemployment Rate (2023): 1.2%"
-            },
-            {
-                name: "Tract 9015.09",
-                centroid: [38.8631063, -77.6687126],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 4.3,
-                unemployment: 2.7,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9015.09</b><br>Centroid: 38.8631063, -77.6687126<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 4.3%<br>Unemployment Rate (2023): 2.7%"
-            },
-            {
-                name: "Tract 9015.1",
-                centroid: [38.8354407, -77.655675],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 3.6,
-                unemployment: 3.0,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9015.1</b><br>Centroid: 38.8354407, -77.655675<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 3.6%<br>Unemployment Rate (2023): 3.0%"
-            },
-            {
-                name: "Tract 9015.11",
-                centroid: [38.8539529, -77.6545208],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 3.2,
-                unemployment: 2.9,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9015.11</b><br>Centroid: 38.8539529, -77.6545208<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 3.2%<br>Unemployment Rate (2023): 2.9%"
-            },
-            {
-                name: "Tract 9016.01",
-                centroid: [38.787528, -77.4939559],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 5.8,
-                unemployment: 1.7,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9016.01</b><br>Centroid: 38.787528, -77.4939559<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 5.8%<br>Unemployment Rate (2023): 1.7%"
-            },
-            {
-                name: "Tract 9016.02",
-                centroid: [38.7972052, -77.4990685],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 6.0,
-                unemployment: 2.7,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9016.02</b><br>Centroid: 38.7972052, -77.4990685<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.0%<br>Unemployment Rate (2023): 2.7%"
-            },
-            {
-                name: "Tract 9017.02",
-                centroid: [38.7902498, -77.4687393],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 3.6,
-                unemployment: 3.0,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9017.02</b><br>Centroid: 38.7902498, -77.4687393<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 3.6%<br>Unemployment Rate (2023): 3.0%"
-            },
-            {
-                name: "Tract 9017.03",
-                centroid: [38.7760558, -77.4872922],
-                qct: "NO",
-                dda: "NO",
-                oz: "NO",
-                poverty: 9.9,
-                unemployment: 3.5,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9017.03</b><br>Centroid: 38.7760558, -77.4872922<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 9.9%<br>Unemployment Rate (2023): 3.5%"
-            },
-            {
-                name: "Tract 9017.04",
-                centroid: [38.779803, -77.4991872],
-                qct: "YES",
-                dda: "NO",
-                oz: "NO",
-                poverty: 14.2,
-                unemployment: 3.3,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9017.04</b><br>Centroid: 38.779803, -77.4991872<br>QCT: YES<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 14.2%<br>Unemployment Rate (2023): 3.3%"
-            },
-            {
-                name: "Tract 9019",
-                centroid: [38.7875441, -77.4471147],
-                qct: "NO",
-                dda: "NO",
-                oz: "YES",
-                poverty: 8.0,
-                unemployment: 1.9,
-                ffiec: "Urban",
-                popup: "<b>Census Tract 9019</b><br>Centroid: 38.7875441, -77.4471147<br>QCT: NO<br>DDA: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 8.0%<br>Unemployment Rate (2023): 1.9%"
-            }
-        ];
-
-        var markerLayer = L.layerGroup().addTo(map);
-
-        function getMarkerColor(qct, dda) {
-            if (qct === "YES") return "yellow";
-            if (dda === "YES") return "red";
-            return "blue";
-        }
-
-        function updateMarkers() {
-            markerLayer.clearLayers();
-            var qctFilter = document.getElementById("qct-filter").checked;
-            var ddaFilter = document.getElementById("dda-filter").checked;
-            var hoctFilter = document.getElementById("hoct-filter").value;
-            var ffiecFilter = document.getElementById("ffiec-filter").value;
-            var slider = document.getElementById("poverty-range");
-            var [minPoverty, maxPoverty] = slider.noUiSlider.get();
-            tracts.forEach(function(tract) {
-                var showMarker = true;
-                if (qctFilter && !(tract.qct === "YES" && tract.dda !== "YES")) showMarker = false;
-                if (ddaFilter && !(tract.dda === "YES" && tract.qct !== "YES")) showMarker = false;
-                if (hoctFilter !== "All") {
-                    if (hoctFilter === "12-10" && !(tract.poverty < 12 && tract.poverty >= 10)) showMarker = false;
-                    if (hoctFilter === "10-3" && !(tract.poverty < 10 && tract.poverty >= 3)) showMarker = false;
-                    if (hoctFilter === "3-0" && !(tract.poverty < 3)) showMarker = false;
-                }
-                if (ffiecFilter !== "All" && tract.ffiec !== ffiecFilter) showMarker = false;
-                if (tract.poverty < minPoverty || tract.poverty > maxPoverty) showMarker = false;
-                if (showMarker) {
-                    var marker = L.marker(tract.centroid, {
-                        icon: L.divIcon({
-                            className: "custom-marker",
-                            html: `<div class="tract-label">${tract.name}</div>` +
-                                  `<div style="background: ${getMarkerColor(tract.qct, tract.dda)}; width: 16px; height: 16px; border-radius: 50%; border: 1px solid #000;"></div>`,
-                            iconSize: [16, 40],
-                            iconAnchor: [8, 40],
-                            popupAnchor: [0, -30]
-                        })
-                    }).addTo(markerLayer);
-                    marker.bindPopup(tract.popup);
-                }
-            });
-        }
-
-        var slider = document.getElementById("poverty-range");
-        noUiSlider.create(slider, {
-            start: [0, 40],
-            range: {
-                'min': 0,
-                'max': 40
-            },
-            step: 0.1,
-            connect: true
-        });
-        slider.noUiSlider.on("update", function(values, handle) {
-            var minValue = values[0];
-            var maxValue = values[1];
-            document.getElementById("range-value").textContent = minValue + " - " + maxValue;
-            updateMarkers();
-        });
-
-        updateMarkers();
-        document.getElementById("qct-filter").addEventListener("change", updateMarkers);
-        document.getElementById("dda-filter").addEventListener("change", updateMarkers);
-        document.getElementById("hoct-filter").addEventListener("change", updateMarkers);
-        document.getElementById("ffiec-filter").addEventListener("change", updateMarkers);
-
-        var legend = L.control({ position: "bottomright" });
-        legend.onAdd = function(map) {
-            var div = L.DomUtil.create("div", "leaflet-control-legend");
-            div.innerHTML = `
-                <div class="legend-item"><span class="legend-color" style="background: yellow;"></span>QCT</div>
-                <div class="legend-item"><span class="legend-color" style="background: red;"></span>DDA</div>
-                <div class="legend-item"><span class="legend-color" style="background: blue;"></span>Census Tract</div>
-            `;
-            return div;
-        };
-        legend.addTo(map);
-
-        var princeWilliamCountyBoundary = L.geoJSON({
+        var countyBoundary = {
             "type": "FeatureCollection",
             "features": [{
                 "type": "Feature",
@@ -1424,10 +413,12 @@
                     "NAMELSAD": "Prince William County"
                 }
             }]
-        }, {
+        };
+
+        L.geoJSON(countyBoundary, {
             style: {
-                color: 'blue',
-                weight: 2,
+                color: 'black',
+                weight: 2.5,
                 opacity: 0.8,
                 fillColor: '#666',
                 fillOpacity: 0.1
@@ -1436,6 +427,1011 @@
                 layer.bindPopup("Prince William County, VA Boundary");
             }
         }).addTo(map);
+
+        var tracts = [
+            {
+                name: "9001",
+                centroid: [38.6261299, -77.2499428],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 1.6,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9001</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 1.6%"
+            },
+            {
+                name: "9002.01",
+                centroid: [38.6642184, -77.2518531],
+                qct: "NO",
+                dda: "NO",
+                oz: "YES",
+                poverty: 13.1,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9002.01</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: NO<br>Opportunity Zone: YES<br>FFIEC: Urban<br>Poverty Rate (2023): 13.1%"
+            },
+            {
+                name: "9002.02",
+                centroid: [38.6628993, -77.2665481],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 1.3,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9002.02</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 1.3%"
+            },
+            {
+                name: "9002.03",
+                centroid: [38.6546809, -77.2626427],
+                qct: "YES",
+                dda: "NO",
+                oz: "YES",
+                poverty: 11.0,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9002.03</b><br>Qualified Census Tract: YES<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (10-12%)<br>Opportunity Zone: YES<br>FFIEC: Urban<br>Poverty Rate (2023): 11.0%"
+            },
+            {
+                name: "9003.01",
+                centroid: [38.6771114, -77.2588703],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 20.5,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9003.01</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: NO<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 20.5%"
+            },
+            {
+                name: "9003.02",
+                centroid: [38.6677907, -77.2785698],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 14.5,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9003.02</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: NO<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 14.5%"
+            },
+            {
+                name: "9004.03",
+                centroid: [38.645467, -77.3005652],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 6.2,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9004.03</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.2%"
+            },
+            {
+                name: "9004.04",
+                centroid: [38.6406633, -77.3214704],
+                qct: "YES",
+                dda: "NO",
+                oz: "NO",
+                poverty: 16.8,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9004.04</b><br>Qualified Census Tract: YES<br>Difficult Development Area: NO<br>High Opportunity Census Tract: NO<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 16.8%"
+            },
+            {
+                name: "9004.07",
+                centroid: [38.6384548, -77.341737],
+                qct: "YES",
+                dda: "NO",
+                oz: "NO",
+                poverty: 6.4,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9004.07</b><br>Qualified Census Tract: YES<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.4%"
+            },
+            {
+                name: "9004.08",
+                centroid: [38.6270493, -77.3366721],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 8.1,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9004.08</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 8.1%"
+            },
+            {
+                name: "9004.09",
+                centroid: [38.6282075, -77.3235485],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 2.5,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9004.09</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 2.5%"
+            },
+            {
+                name: "9004.1",
+                centroid: [38.6195144, -77.3046167],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 7.7,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9004.1</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 7.7%"
+            },
+            {
+                name: "9005.02",
+                centroid: [38.6271336, -77.2842706],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 3.5,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9005.02</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 3.5%"
+            },
+            {
+                name: "9005.03",
+                centroid: [38.6447685, -77.2801936],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 1.8,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9005.03</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 1.8%"
+            },
+            {
+                name: "9005.04",
+                centroid: [38.6434388, -77.2720178],
+                qct: "YES",
+                dda: "NO",
+                oz: "NO",
+                poverty: 11.1,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9005.04</b><br>Qualified Census Tract: YES<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (10-12%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 11.1%"
+            },
+            {
+                name: "9006.01",
+                centroid: [38.6362957, -77.2572448],
+                qct: "YES",
+                dda: "NO",
+                oz: "NO",
+                poverty: 18.1,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9006.01</b><br>Qualified Census Tract: YES<br>Difficult Development Area: NO<br>High Opportunity Census Tract: NO<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 18.1%"
+            },
+            {
+                name: "9006.02",
+                centroid: [38.6469519, -77.256415],
+                qct: "YES",
+                dda: "NO",
+                oz: "NO",
+                poverty: 9.6,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9006.02</b><br>Qualified Census Tract: YES<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 9.6%"
+            },
+            {
+                name: "9007.01",
+                centroid: [38.6208833, -77.2768035],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 9.5,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9007.01</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 9.5%"
+            },
+            {
+                name: "9007.02",
+                centroid: [38.6182696, -77.2636848],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 10.1,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9007.02</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (10-12%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 10.1%"
+            },
+            {
+                name: "9008.01",
+                centroid: [38.5982148, -77.274894],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 0.3,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9008.01</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 0.3%"
+            },
+            {
+                name: "9008.03",
+                centroid: [38.5829842, -77.3006221],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 17.9,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9008.03</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: NO<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 17.9%"
+            },
+            {
+                name: "9008.04",
+                centroid: [38.5814189, -77.2771532],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 1.3,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9008.04</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 1.3%"
+            },
+            {
+                name: "9009.01",
+                centroid: [38.5618028, -77.3196575],
+                qct: "YES",
+                dda: "NO",
+                oz: "NO",
+                poverty: 9.5,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9009.01</b><br>Qualified Census Tract: YES<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 9.5%"
+            },
+{
+                name: "9009.04",
+                centroid: [38.5604161, -77.2885287],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 4.0,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9009.04</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 4.0%"
+            },
+            {
+                name: "9009.05",
+                centroid: [38.5412028, -77.3178651],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 8.5,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9009.05</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 8.5%"
+            },
+            {
+                name: "9010.05",
+                centroid: [38.6207175, -77.3882838],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 0.3,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9010.05</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 0.3%"
+            },
+            {
+                name: "9010.09",
+                centroid: [38.6215185, -77.355868],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 1.1,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9010.09</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 1.1%"
+            },
+            {
+                name: "9010.1",
+                centroid: [38.6123227, -77.3553713],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 1.5,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9010.1</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 1.5%"
+            },
+            {
+                name: "9010.11",
+                centroid: [38.6127626, -77.3253145],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 6.5,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9010.11</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.5%"
+            },
+            {
+                name: "9010.12",
+                centroid: [38.5975118, -77.3236699],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 10.2,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9010.12</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (10-12%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 10.2%"
+            },
+            {
+                name: "9010.13",
+                centroid: [38.5735915, -77.3277781],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 2.2,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9010.13</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 2.2%"
+            },
+            {
+                name: "9010.14",
+                centroid: [38.5879276, -77.3919514],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 9.4,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9010.14</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 9.4%"
+            },
+            {
+                name: "9010.15",
+                centroid: [38.5841196, -77.3147366],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 11.6,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9010.15</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (10-12%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 11.6%"
+            },
+            {
+                name: "9010.16",
+                centroid: [38.6011606, -77.3065775],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 5.0,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9010.16</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 5.0%"
+            },
+            {
+                name: "9011.01",
+                centroid: [38.5287151, -77.300699],
+                qct: "YES",
+                dda: "NO",
+                oz: "NO",
+                poverty: 16.9,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9011.01</b><br>Qualified Census Tract: YES<br>Difficult Development Area: NO<br>High Opportunity Census Tract: NO<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 16.9%"
+            },
+            {
+                name: "9011.02",
+                centroid: [38.5267349, -77.3313676],
+                qct: "YES",
+                dda: "NO",
+                oz: "NO",
+                poverty: 2.8,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9011.02</b><br>Qualified Census Tract: YES<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 2.8%"
+            },
+            {
+                name: "9012.03",
+                centroid: [38.6527058, -77.3343473],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 6.7,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.03</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.7%"
+            },
+            {
+                name: "9012.08",
+                centroid: [38.6846113, -77.2770107],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 4.5,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.08</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 4.5%"
+            },
+            {
+                name: "9012.09",
+                centroid: [38.6663539, -77.2970205],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 11.9,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.09</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (10-12%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 11.9%"
+            },
+            {
+                name: "9012.11",
+                centroid: [38.6673898, -77.3398683],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 6.1,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.11</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.1%"
+            },
+            {
+                name: "9012.12",
+                centroid: [38.6684118, -77.3530624],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 4.6,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.12</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 4.6%"
+            },
+            {
+                name: "9012.19",
+                centroid: [38.7037005, -77.3683537],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 2.5,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9012.19</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 2.5%"
+            },
+            {
+                name: "9012.21",
+                centroid: [38.6920592, -77.3154418],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 8.5,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.21</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 8.5%"
+            },
+            {
+                name: "9012.22",
+                centroid: [38.6995521, -77.3053328],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 4.0,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.22</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 4.0%"
+            },
+            {
+                name: "9012.23",
+                centroid: [38.6895771, -77.2946313],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 6.8,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.23</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.8%"
+            },
+            {
+                name: "9012.24",
+                centroid: [38.674409, -77.3081957],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 4.3,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.24</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 4.3%"
+            },
+{
+                name: "9012.25",
+                centroid: [38.6692765, -77.32198],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 4.2,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.25</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 4.2%"
+            },
+            {
+                name: "9012.26",
+                centroid: [38.6710656, -77.368372],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 3.2,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.26</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 3.2%"
+            },
+            {
+                name: "9012.27",
+                centroid: [38.6545058, -77.3636473],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 5.9,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.27</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 5.9%"
+            },
+            {
+                name: "9012.28",
+                centroid: [38.6397935, -77.3642237],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 6.2,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.28</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.2%"
+            },
+            {
+                name: "9012.29",
+                centroid: [38.6498882, -77.3839385],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 3.6,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.29</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 3.6%"
+            },
+            {
+                name: "9012.3",
+                centroid: [38.6634529, -77.389239],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 10.0,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.3</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (10-12%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 10.0%"
+            },
+            {
+                name: "9012.31",
+                centroid: [38.738969, -77.4178402],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 5.5,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9012.31</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 5.5%"
+            },
+            {
+                name: "9012.32",
+                centroid: [38.7197605, -77.4408887],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 5.8,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.32</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 5.8%"
+            },
+            {
+                name: "9012.33",
+                centroid: [38.6801186, -77.4247236],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 5.4,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.33</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 5.4%"
+            },
+            {
+                name: "9012.34",
+                centroid: [38.647253, -77.4083755],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 2.6,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9012.34</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 2.6%"
+            },
+            {
+                name: "9012.35",
+                centroid: [38.6980298, -77.3364202],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 0.5,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.35</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 0.5%"
+            },
+            {
+                name: "9012.36",
+                centroid: [38.6851074, -77.3412157],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 2.6,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.36</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 2.6%"
+            },
+            {
+                name: "9012.37",
+                centroid: [38.6855748, -77.3277445],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 5.4,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9012.37</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 5.4%"
+            },
+            {
+                name: "9013.03",
+                centroid: [38.7272124, -77.4863504],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 7.0,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9013.03</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 7.0%"
+            },
+            {
+                name: "9013.04",
+                centroid: [38.7039294, -77.4819401],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 4.1,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9013.04</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 4.1%"
+            },
+            {
+                name: "9013.05",
+                centroid: [38.6691089, -77.5495703],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 4.4,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9013.05</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 4.4%"
+            },
+            {
+                name: "9013.06",
+                centroid: [38.6721551, -77.4659808],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 7.4,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9013.06</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 7.4%"
+            },
+            {
+                name: "9014.03",
+                centroid: [38.7706914, -77.5182829],
+                qct: "YES",
+                dda: "NO",
+                oz: "NO",
+                poverty: 14.2,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9014.03</b><br>Qualified Census Tract: YES<br>Difficult Development Area: NO<br>High Opportunity Census Tract: NO<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 14.2%"
+            },
+            {
+                name: "9014.07",
+                centroid: [38.794635, -77.5231001],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 8.0,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9014.07</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 8.0%"
+            },
+            {
+                name: "9014.09",
+                centroid: [38.7587015, -77.539587],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 2.8,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9014.09</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 2.8%"
+            },
+            {
+                name: "9014.11",
+                centroid: [38.7807416, -77.6328876],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 3.3,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9014.11</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 3.3%"
+            },
+            {
+                name: "9014.12",
+                centroid: [38.7676013, -77.6107683],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 1.7,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9014.12</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 1.7%"
+            },
+            {
+                name: "9014.13",
+                centroid: [38.7599442, -77.5913334],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 1.4,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9014.13</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 1.4%"
+            },
+{
+                name: "9014.14",
+                centroid: [38.7483287, -77.5997634],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 2.7,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9014.14</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 2.7%"
+            },
+            {
+                name: "9014.15",
+                centroid: [38.7409926, -77.572052],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 1.0,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9014.15</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 1.0%"
+            },
+            {
+                name: "9014.16",
+                centroid: [38.7240552, -77.542824],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 1.5,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9014.16</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 1.5%"
+            },
+            {
+                name: "9014.17",
+                centroid: [38.7255314, -77.615707],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 4.1,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9014.17</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 4.1%"
+            },
+            {
+                name: "9014.18",
+                centroid: [38.7897874, -77.5487978],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 11.7,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9014.18</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (10-12%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 11.7%"
+            },
+            {
+                name: "9014.19",
+                centroid: [38.7881629, -77.5270594],
+                qct: "YES",
+                dda: "NO",
+                oz: "NO",
+                poverty: 29.9,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9014.19</b><br>Qualified Census Tract: YES<br>Difficult Development Area: NO<br>High Opportunity Census Tract: NO<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 29.9%"
+            },
+            {
+                name: "9014.2",
+                centroid: [38.7715293, -77.5594319],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 0.6,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9014.2</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 0.6%"
+            },
+            {
+                name: "9014.21",
+                centroid: [38.7743603, -77.5841256],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 0.8,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9014.21</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 0.8%"
+            },
+            {
+                name: "9015.03",
+                centroid: [38.8519431, -77.5766167],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 0.3,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9015.03</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 0.3%"
+            },
+            {
+                name: "9015.04",
+                centroid: [38.8102615, -77.5879944],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 3.4,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9015.04</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 3.4%"
+            },
+            {
+                name: "9015.05",
+                centroid: [38.8344415, -77.61703],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 1.2,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9015.05</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 1.2%"
+            },
+            {
+                name: "9015.06",
+                centroid: [38.8151011, -77.6231483],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 3.5,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9015.06</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 3.5%"
+            },
+            {
+                name: "9015.07",
+                centroid: [38.8023441, -77.6226833],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 6.2,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9015.07</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 6.2%"
+            },
+            {
+                name: "9015.08",
+                centroid: [38.8005563, -77.6532602],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 5.2,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9015.08</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 5.2%"
+            },
+            {
+                name: "9015.09",
+                centroid: [38.8657722, -77.6682758],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 4.7,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9015.09</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 4.7%"
+            },
+            {
+                name: "9015.10",
+                centroid: [38.8296394, -77.6545745],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 1.8,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9015.10</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 1.8%"
+            },
+            {
+                name: "9015.11",
+                centroid: [38.8529233, -77.6667693],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 0.8,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9015.11</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 0.8%"
+            },
+            {
+                name: "9016.01",
+                centroid: [38.787528, -77.4939559],
+                qct: "YES",
+                dda: "NO",
+                oz: "NO",
+                poverty: 17.1,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9016.01</b><br>Qualified Census Tract: YES<br>Difficult Development Area: NO<br>High Opportunity Census Tract: NO<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 17.1%"
+            },
+            {
+                name: "9016.02",
+                centroid: [38.7964637, -77.4982233],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 2.5,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9016.02</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 2.5%"
+            },
+            {
+                name: "9017.02",
+                centroid: [38.7909265, -77.4693126],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 7.4,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9017.02</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: NO<br>FFIEC: Mixed<br>Poverty Rate (2023): 7.4%"
+            },
+            {
+                name: "9017.03",
+                centroid: [38.7760558, -77.4872922],
+                qct: "NO",
+                dda: "NO",
+                oz: "NO",
+                poverty: 2.1,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9017.03</b><br>Qualified Census Tract: NO<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-0%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 2.1%"
+            },
+            {
+                name: "9017.04",
+                centroid: [38.7791653, -77.4991628],
+                qct: "YES",
+                dda: "NO",
+                oz: "NO",
+                poverty: 10.4,
+                ffiec: "Urban",
+                popup: "<b>Census Tract 9017.04</b><br>Qualified Census Tract: YES<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (10-12%)<br>Opportunity Zone: NO<br>FFIEC: Urban<br>Poverty Rate (2023): 10.4%"
+            },
+            {
+                name: "9019",
+                centroid: [38.7873394, -77.4478916],
+                qct: "YES",
+                dda: "NO",
+                oz: "YES",
+                poverty: 6.8,
+                ffiec: "Mixed",
+                popup: "<b>Census Tract 9019</b><br>Qualified Census Tract: YES<br>Difficult Development Area: NO<br>High Opportunity Census Tract: YES (3-10%)<br>Opportunity Zone: YES<br>FFIEC: Mixed<br>Poverty Rate (2023): 6.8%"
+            }
+];
+
+        var markerLayer = L.layerGroup().addTo(map);
+
+        function getMarkerColor(qct, dda) {
+            if (qct === "YES") return "yellow";
+            if (dda === "YES") return "red";
+            return "blue";
+        }
+
+        function updateMarkers() {
+            markerLayer.clearLayers();
+            var ozFilter = document.getElementById("oz-filter").checked;
+            var qctFilter = document.getElementById("qct-filter").checked;
+            var ddaFilter = document.getElementById("dda-filter").checked;
+            var hoctFilter = document.getElementById("hoct-filter").value;
+            var ffiecFilter = document.getElementById("ffiec-filter").value;
+            var tractFilter = document.getElementById("tract-filter").value;
+
+            tracts.forEach(function(tract) {
+                var showMarker = true;
+
+                if (tractFilter !== "All") {
+                    showMarker = tract.name === tractFilter;
+                } else {
+                    if (ozFilter && tract.oz !== "YES") showMarker = false;
+                    if (qctFilter && tract.qct !== "YES") showMarker = false;
+                    if (ddaFilter && tract.dda !== "YES") showMarker = false;
+                    if (hoctFilter !== "All") {
+                        if (hoctFilter === "12-10" && !(tract.poverty < 12 && tract.poverty >= 10)) showMarker = false;
+                        if (hoctFilter === "10-3" && !(tract.poverty < 10 && tract.poverty >= 3)) showMarker = false;
+                        if (hoctFilter === "3-0" && !(tract.poverty < 3)) showMarker = false;
+                    }
+                    if (ffiecFilter !== "All" && tract.ffiec !== ffiecFilter) showMarker = false;
+                }
+
+                if (showMarker) {
+                    var marker = L.marker(tract.centroid, {
+                        icon: L.divIcon({
+                            className: "custom-marker",
+                            html: `<div class="tract-label">${tract.name}</div>` +
+                                  `<div style="background: ${getMarkerColor(tract.qct, tract.dda)}; width: 16px; height: 16px; border-radius: 50%; border: 1px solid #000;"></div>`,
+                            iconSize: [16, 40],
+                            iconAnchor: [8, 40],
+                            popupAnchor: [0, -30]
+                        })
+                    }).addTo(markerLayer);
+                    marker.bindPopup(tract.popup);
+                }
+            });
+        }
+
+        document.getElementById("oz-filter").addEventListener("change", updateMarkers);
+        document.getElementById("qct-filter").addEventListener("change", updateMarkers);
+        document.getElementById("dda-filter").addEventListener("change", updateMarkers);
+        document.getElementById("hoct-filter").addEventListener("change", updateMarkers);
+        document.getElementById("ffiec-filter").addEventListener("change", updateMarkers);
+        document.getElementById("tract-filter").addEventListener("change", function(e) {
+            var selected = e.target.value;
+            if (selected === "All") {
+                map.setView([38.6779, -77.3986], 11);
+            } else {
+                var tract = tracts.find(t => t.name === selected);
+                if (tract) {
+                    map.setView(tract.centroid, 13);
+                }
+            }
+            updateMarkers();
+        });
+
+        var legend = L.control({ position: "bottomright" });
+        legend.onAdd = function(map) {
+            var div = L.DomUtil.create("div", "leaflet-control-legend");
+            div.innerHTML = `
+        <div class="legend-item"><span class="legend-color" style="background: yellow;"></span>Qualified Census Tract (QCT)</div>
+        <div class="legend-item"><span class="legend-color" style="background: red;"></span>Difficult Development Area (DDA)</div>
+        <div class="legend-item"><span class="legend-color" style="background: blue;"></span>Census Tract</div>
+            `;
+            return div;
+        };
+        legend.addTo(map);
+
+        updateMarkers();
     </script>
 </body>
 </html>
